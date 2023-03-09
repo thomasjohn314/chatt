@@ -5,6 +5,7 @@ from tkinter import scrolledtext
 from Crypto.PublicKey import RSA
 import json
 from secure_socket import secure_socket
+import sys
 
 class client:
     def __init__(self):
@@ -35,6 +36,7 @@ class client:
             else:
                 try:
                     server_address = server_address.split(':')
+                    server_address[0] = socket.gethostbyname(server_address[0])
                     server_address[1] = int(server_address[1])
                     server_address = tuple(server_address)
                 except:
@@ -126,7 +128,7 @@ class client:
             self.kill_thread = True
             self.socket.shutdown(1)
             self.socket.close()
-        quit()
+        sys.exit()
         
     def main(self):
         self.root_window = tk.Tk()

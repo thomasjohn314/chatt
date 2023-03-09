@@ -1,7 +1,7 @@
+/build
+/src/__pycache__
+/src/client_config.json
+/src/server_config.json
+/src/client_rsa.pem
+/src/server_rsa.pem
 /venv
-/__pycache__
-/client_config.json
-/server_config.json
-/client_rsa.pem
-/server_rsa.pem
-/testing.py

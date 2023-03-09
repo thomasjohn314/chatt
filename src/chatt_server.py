@@ -3,6 +3,7 @@ import threading
 import json
 from Crypto.PublicKey import RSA
 from secure_socket import secure_socket
+import sys
 
 class server:
     def __init__(self):
@@ -39,7 +40,7 @@ class server:
             load_rsa_from_file = config['load_rsa_from_file']
         except:
             print('Invalid configuration file. Delete server_config.json to restore default.')
-            quit()
+            sys.exit()
         if load_rsa_from_file:
             while True:
                 try:
