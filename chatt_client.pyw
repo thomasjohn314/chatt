@@ -5,23 +5,7 @@ from tkinter import scrolledtext
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP as RSA_cipher
 import json
-
-class secure_socket:
-    def __init__(self, socket, key_pair):
-        self.socket = socket
-        self.key_pair = key_pair
-        
-    def handshake(self):
-        self.socket.sendall(self.key_pair.publickey().exportKey())
-        remote_public_key = RSA.importKey(self.socket.recv(1024))
-        self.encrypt = RSA_cipher.new(remote_public_key).encrypt
-        self.decrypt = RSA_cipher.new(self.key_pair).decrypt
-        
-    def sendall(self, data):
-        self.socket.sendall(self.encrypt(data))
-        
-    def recv(self):
-        return self.decrypt(self.socket.recv(1024))
+from secure_socket import secure_socket
 
 class client:
     def __init__(self):
@@ -63,9 +47,9 @@ class client:
                     self.secure = secure_socket(self.socket, self.key_pair)
                     self.secure.handshake()
                     self.secure.sendall(username.encode())
-                    motd = self.secure.recv().decode()
+                    motd = self.secure.recv(1024).decode()
                     self.secure.sendall(password.encode())
-                    response = self.secure.recv()
+                    response = self.secure.recv(1024)
                 except:
                     try:
                         self.socket.shutdown(1)
@@ -116,7 +100,7 @@ class client:
             
     def recv_messages(self):
         while True:
-            message = self.secure.recv().decode()
+            message = self.secure.recv(1024).decode()
             self.output_box.configure(state='normal')
             self.output_box.insert(tk.END, message + '\n')
             self.output_box.yview(tk.END)

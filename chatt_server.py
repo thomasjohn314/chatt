@@ -3,23 +3,7 @@ import threading
 import json
 from Crypto.PublicKey import RSA
 from Crypto.Cipher import PKCS1_OAEP as RSA_cipher
-
-class secure_socket:
-    def __init__(self, socket, key_pair):
-        self.socket = socket
-        self.key_pair = key_pair
-        
-    def handshake(self):
-        remote_public_key = RSA.importKey(self.socket.recv(1024))
-        self.socket.sendall(self.key_pair.publickey().exportKey())
-        self.encrypt = RSA_cipher.new(remote_public_key).encrypt
-        self.decrypt = RSA_cipher.new(self.key_pair).decrypt
-        
-    def sendall(self, data):
-        self.socket.sendall(self.encrypt(data))
-        
-    def recv(self):
-        return self.decrypt(self.socket.recv(1024))
+from secure_socket import secure_socket
 
 class server:
     def __init__(self):
@@ -93,9 +77,9 @@ class server:
         try:
             secure = secure_socket(socket, self.key_pair)
             secure.handshake()
-            username = secure.recv().decode()
+            username = secure.recv(1024).decode()
             secure.sendall(self.motd.encode())
-            password = secure.recv().decode()
+            password = secure.recv(1024).decode()
             if not (username in self.users) or (self.users[username] != password):
                 secure.sendall(bytes(0))
                 socket.shutdown(1)
@@ -112,7 +96,7 @@ class server:
                 self.broadcast('SERVER: {} connected.'.format(username))
                 while True:
                     try:
-                        message = secure.recv().decode()
+                        message = secure.recv(1024).decode()
                     except:
                         socket.shutdown(1)
                         socket.close()
