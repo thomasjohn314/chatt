@@ -4,8 +4,4 @@
 /src/server_config.json
 /src/client_rsa.pem
 /src/server_rsa.pem
-/client_config.json
-/server_config.json
-/client_rsa.pem
-/server_rsa.pem
 /venv
