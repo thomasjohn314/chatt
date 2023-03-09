@@ -2,7 +2,6 @@ import socket
 import threading
 import json
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP as RSA_cipher
 from secure_socket import secure_socket
 
 class server:

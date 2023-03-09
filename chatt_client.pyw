@@ -3,7 +3,6 @@ import threading
 import tkinter as tk
 from tkinter import scrolledtext
 from Crypto.PublicKey import RSA
-from Crypto.Cipher import PKCS1_OAEP as RSA_cipher
 import json
 from secure_socket import secure_socket
 
